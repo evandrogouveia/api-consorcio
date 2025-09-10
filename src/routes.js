@@ -4,8 +4,8 @@ const authController = require('../controllers/login/authController');
 const atasController = require('../controllers/institucional/atasController');
 const consorcioController = require('../controllers/institucional/consorcioController');
 const contratosRateioController = require('../controllers/institucional/contratosRateioController');
-const andamentoController = require('../controllers/licitacoes/andamentoController');
-const licitacoesController = require('../controllers/licitacoes/licitacoesController');
+const andamentoController = require('../controllers/contratos-licitacoes/andamentoController');
+const licitacoesController = require('../controllers/contratos-licitacoes/licitacoesController');
 const municipiosController = require('../controllers/consorcio/municipiosController');
 const newsConsorcioCategoryController = require('../controllers/news/newsConsorcioCategoryController');
 const newsConsorcioController = require('../controllers/news/newsConsorcioController');
@@ -21,6 +21,17 @@ const lrfController = require('../controllers/lrf-contas-publicas/lrfController'
 const leisController = require('../controllers/lrf-contas-publicas/leisController');
 const configuracoesController = require('../controllers/configuracoes/configuracoesController');
 const arquivosPoloController = require('../controllers/consorcio/arquivosPoloController');
+const contratosController = require('../controllers/contratos-licitacoes/contratosController');
+const orcamentoContabilController = require('../controllers/lrf-contas-publicas/orcamentoContabilController');
+const balancoPatrimonialController = require('../controllers/lrf-contas-publicas/balancoPatrimonialController');
+const pesquisaController = require('../controllers/pesquisa/pesquisaController');
+const servicosAtividadesController = require('../controllers/lrf-contas-publicas/servicosAtividadesController');
+const ouvidoriaController = require('../controllers/ouvidoria/ouvidoriaController');
+const respostasManifestacaoController = require('../controllers/ouvidoria/respostasManifestacaoController');
+const folhaPagamentoController = require('../controllers/lrf-contas-publicas/folhaPagamentoController');
+const contratosProgramaController = require('../controllers/institucional/contratosProgramaController');
+const vagasController = require('../controllers/vagas/vagasController');
+const resultadosController = require('../controllers/consorcio/resultadosController');
 const router = require('express').Router();
 
 router.get('/', (req, res) => res.json({ message: 'Funcionando!' }));
@@ -102,13 +113,14 @@ router.patch('/update-county/:id', multer(municipiosController).array('file'), m
 router.delete('/delete-county/:id', municipiosController.deleteCounty);
 
 /*--------------------------- (CONSORCIO) - ROTAS DE POLOS  ---------------------------*/
-//adiciona um novo polo
-router.post('/new-polo', multer(polosController).array('file'), polosController.newPolo);
-//obtem todos os polos
+const uploadFields = [
+    {name: 'file', maxCount: 1},
+    {name: 'imagens'},
+];
+
+router.post('/new-polo', multer(polosController).fields(uploadFields), polosController.newPolo);
 router.get('/all-polos', polosController.getPolos);
-//atualiza o polo
-router.patch('/update-polo/:id', multer(polosController).array('file'), polosController.updatePolo);
-//deleta o polo
+router.patch('/update-polo/:id', multer(polosController).fields(uploadFields), polosController.updatePolo);
 router.delete('/delete-polo/:id', polosController.deletePolo);
 
 /*--------------------------- (CONSORCIO) - ROTAS DE ARQUIVOS DE POLO ---------------------------*/
@@ -173,15 +185,15 @@ router.delete('/delete-ps-category/:id', categoriesPsController.deletePsCategory
 
 /*--------------------------- (CONSORCIO) - ROTAS DE CONTRATOS DE RATEIO ---------------------------*/
 //adiciona uma novo Contrato
-router.post('/new-contrato',  multer(contratosRateioController).array('file'), contratosRateioController.newContrato);
+router.post('/new-contrato-rateio',  multer(contratosRateioController).array('file'), contratosRateioController.newContrato);
 //obtem todas os Contratos
-router.get('/all-contratos', contratosRateioController.getAllContratos);
+router.get('/all-contratos-rateio', contratosRateioController.getAllContratos);
 //obtem todas os Contratos conforme busca
-router.get('/search-contratos', contratosRateioController.getSearchContratos);
+router.get('/search-contratos-rateio', contratosRateioController.getSearchContratos);
 //atualiza o Contrato
-router.patch('/update-contrato/:id', multer(contratosRateioController).array('file'), contratosRateioController.updateContrato);
+router.patch('/update-contrato-rateio/:id', multer(contratosRateioController).array('file'), contratosRateioController.updateContrato);
 //deleta o Contrato
-router.delete('/delete-contrato/:id', contratosRateioController.deleteContrato);
+router.delete('/delete-contrato-rateio/:id', contratosRateioController.deleteContrato);
 
 /*--------------------------- (CONSORCIO) - ROTAS DE ATAS ---------------------------*/
 //adiciona uma nova ata
@@ -221,6 +233,16 @@ router.post('/new-progress', andamentoController.newProgress);
 //obtem dados do andamento
 router.get('/all-progress', andamentoController.getProgress);
 
+/*--------------------------- (CONSORCIO) - ROTAS DE CONTRATOS ---------------------------*/
+//adiciona uma novo contrato
+router.post('/new-contract',  multer(contratosController).array('file'), contratosController.newContract);
+//obtem todas os contratos
+router.get('/all-contracts', contratosController.getAllContracts);
+//atualiza o contrato
+router.patch('/update-contract/:id', multer(contratosController).array('file'), contratosController.updateContract);
+//deleta o contrato
+router.delete('/delete-contract/:id', contratosController.deleteContract);
+
 /*--------------------------- (CONSORCIO) -  ROTAS DE USUÁRIO ---------------------------*/
 //adiciona um novo usuário
 router.post('/register', userController.register);
@@ -240,5 +262,82 @@ router.post('/new-configuracoes', configuracoesController.novaConfiguracao);
 router.get('/all-configuracoes', configuracoesController.getConfiguracoes);
 //atualiza dados da configurações
 router.patch('/update-configuracoes/:id', configuracoesController.updateConfiguracoes);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE ORÇAMENTO CONTABIL ---------------------------*/
+router.post('/new-orcamento-contabil',  multer(orcamentoContabilController).array('file'), orcamentoContabilController.newOrcamentoContabil);
+router.get('/all-orcamento-contabil', orcamentoContabilController.getAllOrcamentoContabil);
+router.patch('/update-orcamento-contabil/:id', multer(orcamentoContabilController).array('file'), orcamentoContabilController.updateOrcamentoContabil);
+router.delete('/delete-orcamento-contabil/:id', orcamentoContabilController.deleteOrcamentoContabil);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE BALANÇO PATRIMONIAL ---------------------------*/
+router.post('/new-balanco-patrimonial',  multer(balancoPatrimonialController).array('file'), balancoPatrimonialController.newBalancoPatrimonial);
+router.get('/all-balanco-patrimonial', balancoPatrimonialController.getAllBalancoPatrimonial);
+router.patch('/update-balanco-patrimonial/:id', multer(balancoPatrimonialController).array('file'), balancoPatrimonialController.updateBalancoPatrimonial);
+router.delete('/delete-balanco-patrimonial/:id', balancoPatrimonialController.deleteBalancoPatrimonial);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE SERVIÇOS ATIVIDADES ---------------------------*/
+router.post('/new-servicos-atividades',  multer(servicosAtividadesController).array('file'), servicosAtividadesController.newServicoAtividade);
+router.get('/all-servicos-atividades', servicosAtividadesController.getAllServicoAtividade);
+router.patch('/update-servicos-atividades/:id', multer(servicosAtividadesController).array('file'), servicosAtividadesController.updateServicoAtividade);
+router.delete('/delete-servicos-atividades/:id', servicosAtividadesController.deleteServicoAtividade);
+
+/*--------------------------- ROTAS DE MANIFESTAÇÕES ---------------------------*/
+//adiciona uma nova manifestação
+router.post('/new-manifestacao',  multer(ouvidoriaController).array('file'), ouvidoriaController.newManifestacao);
+//obtem todas as manifestação
+router.get('/all-manifestacao', ouvidoriaController.getManifestacao);
+//obtem manifestacao por protocolo
+router.get('/manifestacao/:protocolo', ouvidoriaController.getManifestacaoPorProtocolo);
+//atualiza a manifestação
+router.patch('/update-manifestacao/:id', multer(ouvidoriaController).array('file'), ouvidoriaController.updateManifestacao);
+//deleta a manifestação
+router.delete('/delete-manifestacao/:id', ouvidoriaController.deleteManifestacao);
+
+/*--------------------------- ROTAS DE RESPOSTAS DE MANIFESTAÇÕES ---------------------------*/
+//adiciona uma nova resposta de manifestação
+router.post('/new-resposta-manifestacao', respostasManifestacaoController.newRespostaManifestacao);
+//obtem todas as respostas de manifestação
+router.get('/all-resposta-manifestacao', respostasManifestacaoController.getAllRespostasManifestacao);
+//atualiza a resposta da manifestação
+router.patch('/update-resposta-manifestacao/:id', respostasManifestacaoController.updateRespostaManifestacao);
+//deleta a resposta da manifestação
+router.delete('/delete-resposta-manifestacao/:id', respostasManifestacaoController.deleteRespostaManifestacao);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE FOLHA DE PAGAMENTO ---------------------------*/
+router.post('/new-folha-pagamento',  multer(folhaPagamentoController).array('file'), folhaPagamentoController.newFolhaPagamento);
+router.get('/all-folha-pagamento', folhaPagamentoController.getAllFolhaPagamento);
+router.patch('/update-folha-pagamento/:id', multer(folhaPagamentoController).array('file'), folhaPagamentoController.updateFolhaPagamento);
+router.delete('/delete-folha-pagamento/:id', folhaPagamentoController.deleteFolhaPagamento);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE CONTRATOS DE PROGRAMA ---------------------------*/
+//adiciona uma novo Contrato
+router.post('/new-contrato-programa',  multer(contratosProgramaController).array('file'), contratosProgramaController.newContratoPrograma);
+//obtem todas os Contratos
+router.get('/all-contratos-programa', contratosProgramaController.getAllContratosPrograma);
+//obtem todas os Contratos conforme busca
+router.get('/search-contratos-programa', contratosProgramaController.getSearchContratosPrograma);
+//atualiza o Contrato
+router.patch('/update-contrato-programa/:id', multer(contratosProgramaController).array('file'), contratosProgramaController.updateContratoPrograma);
+//deleta o Contrato
+router.delete('/delete-contrato-programa/:id', contratosProgramaController.deleteContratoPrograma);
+
+
+/*--------------------------- (CONSORCIO) - ROTAS DE PESQUISA ---------------------------*/
+router.get('/pesquisa',  pesquisaController.getPesquisa);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE VAGAS ---------------------------*/
+
+router.post('/new-vaga', vagasController.newVaga);
+router.get('/all-vagas', vagasController.getVagas);
+router.get('/search-vagas', vagasController.getSearchVagas)
+router.patch('/update-vaga/:id', vagasController.updateVaga);
+router.delete('/delete-vaga/:id', vagasController.deleteVaga);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE RESULTADOS ---------------------------*/
+
+router.post('/new-resultado', resultadosController.newResultado);
+router.get('/all-resultados', resultadosController.getResultados);
+router.patch('/update-resultado/:id', resultadosController.updateResultado);
+router.delete('/delete-resultado/:id', resultadosController.deleteResultado);
 
 module.exports = router;

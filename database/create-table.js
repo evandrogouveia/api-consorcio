@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 
 const pool = mysql.createPool({
     multipleStatements: true,
-    host: '185.169.99.137',
+    host: '177.85.99.66',
     port: '3306',
     user: 'ce180037_consorc',
     password: 'c@m@ra2088*&99Gw0',
@@ -240,12 +240,140 @@ function createTable(conn) {
     "PRIMARY KEY (ID)\n" +
     ");";
 
+     /* CRIAR TABELA DE CONTRATOS */
+     const sqlContracts = "CREATE TABLE IF NOT EXISTS contracts (\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "modality varchar(150),\n" +
+     "number varchar(200),\n" +
+     "date varchar(50),\n" +
+     "exercise varchar(50),\n" +
+     "hiredName varchar(600),\n" +
+     "cpfCnpj varchar(100),\n" +
+     "validity JSON,\n" +
+     "globalValue varchar(250),\n" +
+     "monthlyValue varchar(250),\n" +
+     "secretary varchar(250),\n" +
+     "file varchar(250),\n" +
+     "description varchar(6000),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
     const novaColunaLrf = "ALTER TABLE lrf ADD COLUMN acronym VARCHAR(20) AFTER description";
     const novaColunaArquivos = "ALTER TABLE arquivos_polo ADD COLUMN title VARCHAR(250) AFTER typeFile";
-    const novaColunaPolos = "ALTER TABLE polos ADD COLUMN image VARCHAR(250) AFTER ID";
+   
+
+    const novaColunaContratos = "ALTER TABLE contracts ADD COLUMN IDlicitacao VARCHAR(50) AFTER description";
+    const novaColunaLicitacoes = "ALTER TABLE licitacoes ADD COLUMN exercise VARCHAR(150) AFTER title";
+
+     /* CRIAR TABELA DE ORÇAMENTO CONTÁBIL*/
+     const sqlOrcamentoContabil = "CREATE TABLE IF NOT EXISTS orcamento_contabil(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "tipoArquivo varchar(150),\n" +
+     "data varchar(50),\n" +
+     "periodo JSON,\n" +
+     "file varchar(250),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE BALANÇO PATRIMONIAL*/
+     const sqlBalancoPatrimonial = "CREATE TABLE IF NOT EXISTS balanco_patrimonial(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "tipoArquivo varchar(150),\n" +
+     "data varchar(50),\n" +
+     "periodo JSON,\n" +
+     "file varchar(250),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+      /* CRIAR TABELA DE SERVIÇOS E ATIVIDADES*/
+      const sqlServicosAtividades = "CREATE TABLE IF NOT EXISTS servicos_atividades(\n" +
+      "ID int NOT NULL AUTO_INCREMENT,\n" +
+      "polo varchar(150),\n" +
+      "tipoArquivo varchar(150),\n" +
+      "data varchar(50),\n" +
+      "periodo JSON,\n" +
+      "file varchar(250),\n" +
+      "PRIMARY KEY (ID)\n" +
+      ");";
+
+      /* CRIAR TABELA DE MANIFESTAÇÕES */
+    const sqlManifestacoes = "CREATE TABLE IF NOT EXISTS manifestacoes(\n" +
+    "ID int NOT NULL AUTO_INCREMENT,\n" +
+    "nome varchar(150),\n" +
+    "email varchar(50),\n" +
+    "arquivo varchar(250),\n" +
+    "telefone varchar(50),\n" +
+    "sexo varchar(50),\n" +
+    "dataNascimento varchar(50),\n" +
+    "grauInstrucao varchar(150),\n" +
+    "endereco varchar(600),\n" +
+    "bairro varchar(200),\n" +
+    "estado varchar(200),\n" +
+    "municipio varchar(250),\n" +
+    "anonimo BOOLEAN,\n" +
+    "secretaria varchar(500),\n" +
+    "natureza varchar(200),\n" +
+    "mensagem varchar(6000),\n" +
+    "dataCadastro DATETIME,\n" +
+    "protocolo varchar(50),\n" +
+    "PRIMARY KEY (ID)\n" +
+    ");";
+
+    /* CRIAR TABELA DE REPOSTAS DE MANIFESTAÇÕES */
+    const sqlRespostasManifestacoes = "CREATE TABLE IF NOT EXISTS resposta_manifestacoes(\n" +
+    "ID int NOT NULL AUTO_INCREMENT,\n" +
+    "IDmanifestacao int,\n" +
+    "protocolo varchar(50),\n" +
+    "resposta varchar(6000),\n" +
+    "dataResposta DATETIME,\n" +
+    "PRIMARY KEY (ID),\n" +
+    "FOREIGN KEY (IDmanifestacao) REFERENCES manifestacoes(ID)\n" +
+    ");";
+
+     /* CRIAR TABELA DE FOLHA DE PAGAMENTO */
+     const sqlFolhaPagamento = "CREATE TABLE IF NOT EXISTS folha_pagamento(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "tipoArquivo varchar(150),\n" +
+     "mes varchar(50),\n" +
+     "ano varchar(50),\n" +
+     "polo varchar(150),\n" +
+     "file varchar(250),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE CONTRATOS DE PROGRAMA (CONSORCIO) */
+    const sqlContratoPrograma = "CREATE TABLE IF NOT EXISTS contratosPrograma(\n" +
+    "ID int NOT NULL AUTO_INCREMENT,\n" +
+    "title varchar(150),\n" +
+    "date varchar(50),\n" +
+    "secretary varchar(200),\n" +
+    "file JSON,\n" +
+    "description varchar(6000),\n" +
+    "PRIMARY KEY (ID)\n" +
+    ");";
+
+    /* CRIAR TABELA DE VAGAS (CONSORCIO) */
+    const sqlVagas = "CREATE TABLE IF NOT EXISTS vagas(\n" +
+    "ID int NOT NULL AUTO_INCREMENT,\n" +
+    "titulo varchar(250),\n" +
+    "link varchar(250),\n" +
+    "PRIMARY KEY (ID)\n" +
+    ");";
+
+     /* CRIAR TABELA DE RESULTADOS (CONSORCIO) */
+    const sqlResultados = "CREATE TABLE IF NOT EXISTS resultados(\n" +
+    "ID int NOT NULL AUTO_INCREMENT,\n" +
+    "ano varchar(5),\n" +
+    "unidade varchar(250),\n" +
+    "quantidade varchar(250),\n" +
+    "descricao varchar(600),\n" +
+    "PRIMARY KEY (ID)\n" +
+    ");";
+
+     const novaColunaPolos = "ALTER TABLE polos ADD COLUMN apresentacao VARCHAR(6000) AFTER subtitle, ADD COLUMN responsavel VARCHAR(200) AFTER apresentacao, ADD COLUMN imagens JSON AFTER subtitle";
 
 
-    conn.query(sqlHome, function (error, results, fields) {
+    conn.query(sqlResultados, function (error, results, fields) {
         if (error) return console.log(error);
         console.log('criou a tabela');
         pool.end();

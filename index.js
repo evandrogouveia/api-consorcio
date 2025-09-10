@@ -22,7 +22,7 @@ app.use('/api-consorcio/uploads', express.static('uploads'));
 
 app.use('/api-consorcio/', router);
 
-//app.use('/', cors(), router);
+app.use('/', cors(), router);
 
 app.listen(port);
 console.log('API funcionando!');

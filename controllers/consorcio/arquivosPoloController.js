@@ -6,8 +6,10 @@ module.exports = {
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
             let path = `./uploads/arquivos_polo`;
-            if (!fs.existsSync(path)) {
-                fs.mkdirSync(path); //gera o diretório automaticamente
+            if (file.mimetype !== 'application/pdf') {
+                if (!fs.existsSync(path)) {
+                    fs.mkdirSync(path); //gera o diretório automaticamente
+                }
             }
             cb(null, path);
         },
@@ -19,7 +21,7 @@ module.exports = {
 
     newArquivo(req, res) {
         let dataForm = JSON.parse(req.body.formArquivo);
-        
+
         const typeFile = dataForm.typeFile;
         const title = dataForm.title || '';
         const date = dataForm.date || '';
@@ -29,7 +31,7 @@ module.exports = {
         const file = req.files[0]?.filename ? `${process.env.BASE_URL}/api-consorcio/uploads/arquivos_polo/${req.files[0]?.filename}` : '';
         const description = dataForm.description || '';
         const acronym = dataForm.acronym || '';
-
+        console.log(file)
         const newArquivo = `INSERT INTO arquivos_polo(
             typeFile,
             title,
@@ -73,11 +75,11 @@ module.exports = {
         });
 
     },
-    
+
     updateArquivo(req, res) {
         const id = parseInt(req.params.id);
         let dataForm = JSON.parse(req.body.formArquivo);
-        
+
         const typeFile = dataForm.typeFile;
         const title = dataForm.title || '';
         const date = dataForm.date || '';
@@ -88,7 +90,7 @@ module.exports = {
         const description = dataForm.description || '';
         const acronym = dataForm.acronym || '';
 
-        const updateArquivo= 'UPDATE `arquivos_polo` SET `typeFile`= ?,' +
+        const updateArquivo = 'UPDATE `arquivos_polo` SET `typeFile`= ?,' +
             '`title`= ?,' +
             '`date`= ?,' +
             '`exercise`= ?,' +
