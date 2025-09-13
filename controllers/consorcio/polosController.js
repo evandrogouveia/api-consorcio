@@ -19,7 +19,7 @@ module.exports = {
     //cadastra um novo polo
     newPolo(req, res) {
         let dataForm = JSON.parse(req.body.formPolo)
-        const image = req.files[0]?.filename ? `${process.env.BASE_URL}/api-consorcio/uploads/polos/${req.files[0]?.filename}` : '';
+        const image = req.files.file[0]?.filename ? `${process.env.BASE_URL}/api-consorcio/uploads/polos/${req.files.file[0]?.filename}` : '';
         const title = dataForm.title || '';
         const subtitle = dataForm.subtitle || '';
         const imagens = dataForm.imagens || '';
@@ -94,7 +94,7 @@ module.exports = {
         }
 
         const id = parseInt(req.params.id);
-        const image = req.files[0]?.filename ? `${process.env.BASE_URL}/api-consorcio/uploads/polos/${req.files[0]?.filename}` : dataForm.image;
+        const image = req.files.file[0]?.filename ? `${process.env.BASE_URL}/api-consorcio/uploads/polos/${req.files.file[0]?.filename}` : dataForm.image;
         const title = dataForm.title;
         const subtitle = dataForm.subtitle;
         const imagens = dataForm.imagens || '';
