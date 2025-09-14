@@ -32,6 +32,7 @@ const folhaPagamentoController = require('../controllers/lrf-contas-publicas/fol
 const contratosProgramaController = require('../controllers/institucional/contratosProgramaController');
 const vagasController = require('../controllers/vagas/vagasController');
 const resultadosController = require('../controllers/consorcio/resultadosController');
+const funcoesController = require('../controllers/consorcio/funcoesController');
 const router = require('express').Router();
 
 router.get('/', (req, res) => res.json({ message: 'Funcionando!' }));
@@ -339,5 +340,12 @@ router.post('/new-resultado', resultadosController.newResultado);
 router.get('/all-resultados', resultadosController.getResultados);
 router.patch('/update-resultado/:id', resultadosController.updateResultado);
 router.delete('/delete-resultado/:id', resultadosController.deleteResultado);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE MUNICIPIOS  ---------------------------*/
+
+router.post('/new-funcao', multer(funcoesController).array('file'), funcoesController.newFuncao);
+router.get('/all-funcoes/:IDUnidade', funcoesController.getFuncoes);
+router.patch('/update-funcao/:id', multer(funcoesController).array('file'), funcoesController.updateFuncao);
+router.delete('/delete-funcao/:id', funcoesController.deleteFuncao);
 
 module.exports = router;

@@ -372,8 +372,17 @@ function createTable(conn) {
 
      const novaColunaPolos = "ALTER TABLE polos ADD COLUMN apresentacao VARCHAR(6000) AFTER subtitle, ADD COLUMN responsavel VARCHAR(200) AFTER apresentacao, ADD COLUMN imagens JSON AFTER subtitle";
 
+     /* CRIAR TABELA DE FUNCOES*/
+     const sqlFuncoes = "CREATE TABLE IF NOT EXISTS funcoes(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "IDUnidade int NOT NULL,\n" +
+     "titulo varchar(250),\n" +
+     "descricao varchar(5000),\n" +
+     "file varchar(250),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
 
-    conn.query(sqlResultados, function (error, results, fields) {
+    conn.query(sqlFuncoes, function (error, results, fields) {
         if (error) return console.log(error);
         console.log('criou a tabela');
         pool.end();
