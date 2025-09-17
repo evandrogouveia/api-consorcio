@@ -341,7 +341,7 @@ router.get('/all-resultados', resultadosController.getResultados);
 router.patch('/update-resultado/:id', resultadosController.updateResultado);
 router.delete('/delete-resultado/:id', resultadosController.deleteResultado);
 
-/*--------------------------- (CONSORCIO) - ROTAS DE MUNICIPIOS  ---------------------------*/
+/*--------------------------- (CONSORCIO) - ROTAS DE FUNCOES  ---------------------------*/
 
 router.post('/new-funcao', multer(funcoesController).array('file'), funcoesController.newFuncao);
 router.get('/all-funcoes/:IDUnidade', funcoesController.getFuncoes);

@@ -60,7 +60,7 @@ module.exports = {
 
     updateFuncao(req, res) {
         const id = parseInt(req.params.id);
-        let dataForm = JSON.parse(req.body.formMunicipio);
+        let dataForm = JSON.parse(req.body.formFuncao);
 
         const titulo = dataForm.titulo;
         const descricao = dataForm.descricao;
@@ -90,12 +90,12 @@ module.exports = {
     deleteFuncao(req, res) {
         const id = parseInt(req.params.id);
         const deleteFuncao = `DELETE FROM funcoes WHERE ID = ?`;
-
+     
         connection.query(deleteFuncao, [id], function (error, results, fields) {
             if (error) {
                 res.status(400).json({ status: 0, message: 'Erro ao excluir funcao', error: error });
             } else {
-                res.status(200).json(results);
+                res.status(200).json(true);
             }
         });
     }
