@@ -69,7 +69,6 @@ router.post('/register-home', multer(homeController).fields([
 ]), homeController.registerHome);
 
 router.get('/home', homeController.getHome);
-router.get('/publicacoes', homeController.getPublicacoes);
 
 router.patch('/update-home/:id', multer(homeController).fields([
     {name: 'banner1'},
