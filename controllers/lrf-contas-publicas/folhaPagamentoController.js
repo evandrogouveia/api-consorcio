@@ -61,6 +61,38 @@ module.exports = {
         });
 
     },
+
+    getFolhaPagamentoById(req, res) {
+        const id = parseInt(req.params.id);
+        const selectFolhaPagamento = `SELECT * FROM folha_pagamento WHERE ID = ?`;
+
+        connection.query(selectFolhaPagamento, [id], function (error, results, fields) {
+            if (error) {
+                res.status(400).json({ status: 0, message: 'Erro ao obter dados', error: error });
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    },
+
+    getSearchFolhaPagamento(req, res) {
+        const term = req.query.term[0];
+
+        const selectFolhaPagamento = `SELECT * FROM folha_pagamento WHERE 
+        LOWER(folha_pagamento.mes) LIKE LOWER('%${term}%') OR
+        LOWER(folha_pagamento.ano) LIKE LOWER('%${term}%') OR
+        LOWER(folha_pagamento.polo) LIKE LOWER('%${term}%')
+        `;
+
+        connection.query(selectFolhaPagamento, [], function (error, results, fields) {
+            if (error) {
+                res.status(400).json({ status: 0, message: 'Erro ao obter dados', error: error });
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    },
+
     
     updateFolhaPagamento(req, res) {
         const id = parseInt(req.params.id);

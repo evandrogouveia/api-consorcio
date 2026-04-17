@@ -382,7 +382,70 @@ function createTable(conn) {
      "PRIMARY KEY (ID)\n" +
      ");";
 
-    conn.query(sqlFuncoes, function (error, results, fields) {
+     /* CRIAR TABELA DE ATA DE CONSTITUICAO */
+     const sqlAtaConstituicao = "CREATE TABLE IF NOT EXISTS ata_constituicao(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "date varchar(50),\n" +
+     "secretary varchar(200),\n" +
+     "file varchar(500),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE INDICADORES DE RESULTADOS */
+     const sqlIndicadoresResultados = "CREATE TABLE IF NOT EXISTS indicadores_resultados(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "titulo varchar(250),\n" +
+     "data varchar(50),\n" +
+     "exercicio varchar(50),\n" +
+     "secretaria varchar(200),\n" +
+     "file JSON,\n" +
+     "descricao varchar(5000),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE ABSENTEISMO */
+     const sqlAbsenteismo = "CREATE TABLE IF NOT EXISTS absenteismo(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "titulo varchar(250),\n" +
+     "data varchar(50),\n" +
+     "exercicio varchar(50),\n" +
+     "secretaria varchar(200),\n" +
+     "file JSON,\n" +
+     "descricao varchar(5000),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+      /* CRIAR TABELA DE ATA DE REGIMENTO INTERNO */
+     const sqlRegimentoInterno = "CREATE TABLE IF NOT EXISTS regimento_interno(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "secretary varchar(200),\n" +
+     "file varchar(500),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE CONVENIOS */
+     const sqlConvenios = "CREATE TABLE IF NOT EXISTS convenios(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "numero varchar(20),\n" +
+     "ano varchar(5),\n" +
+     "secretaria varchar(200),\n" +
+     "convenente varchar(200),\n" +
+     "file varchar(500),\n" +
+     "descricao varchar(5000),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+     /* CRIAR TABELA DE AGENDA MENSAL */
+     const sqlAgendaMensal = "CREATE TABLE IF NOT EXISTS agenda_mensal(\n" +
+     "ID int NOT NULL AUTO_INCREMENT,\n" +
+     "ano varchar(5),\n" +
+     "mes varchar(50),\n" +
+     "unidade varchar(200),\n" +
+     "file varchar(500),\n" +
+     "PRIMARY KEY (ID)\n" +
+     ");";
+
+    conn.query(sqlAgendaMensal, function (error, results, fields) {
         if (error) return console.log(error);
         console.log('criou a tabela');
         pool.end();

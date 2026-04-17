@@ -33,6 +33,12 @@ const contratosProgramaController = require('../controllers/institucional/contra
 const vagasController = require('../controllers/vagas/vagasController');
 const resultadosController = require('../controllers/consorcio/resultadosController');
 const funcoesController = require('../controllers/consorcio/funcoesController');
+const ataConstituicaoController = require('../controllers/institucional/ataConstituicaoController');
+const indicadoresResultadosController = require('../controllers/indicadores/indicadoresResultadosController');
+const absenteismoController = require('../controllers/indicadores/absenteismoController');
+const regimentoInternoController = require('../controllers/institucional/regimentoInternoController');
+const conveniosController = require('../controllers/convenios/conveniosController');
+const agendaMensalController = require('../controllers/consorcio/agendaMensalController');
 const router = require('express').Router();
 
 router.get('/', (req, res) => res.json({ message: 'Funcionando!' }));
@@ -61,9 +67,10 @@ router.post('/register-home', multer(homeController).fields([
     {name: 'banner5'},
     {name: 'banner6'}
 ]), homeController.registerHome);
-//obtem dados da home
+
 router.get('/home', homeController.getHome);
-//atualiza a home
+router.get('/publicacoes', homeController.getPublicacoes);
+
 router.patch('/update-home/:id', multer(homeController).fields([
     {name: 'banner1'},
     {name: 'banner2'},
@@ -307,6 +314,8 @@ router.delete('/delete-resposta-manifestacao/:id', respostasManifestacaoControll
 /*--------------------------- (CONSORCIO) - ROTAS DE FOLHA DE PAGAMENTO ---------------------------*/
 router.post('/new-folha-pagamento',  multer(folhaPagamentoController).array('file'), folhaPagamentoController.newFolhaPagamento);
 router.get('/all-folha-pagamento', folhaPagamentoController.getAllFolhaPagamento);
+router.get('/folha-pagamento/:id', folhaPagamentoController.getFolhaPagamentoById);
+router.get('/search-folha-pagamento', folhaPagamentoController.getSearchFolhaPagamento);
 router.patch('/update-folha-pagamento/:id', multer(folhaPagamentoController).array('file'), folhaPagamentoController.updateFolhaPagamento);
 router.delete('/delete-folha-pagamento/:id', folhaPagamentoController.deleteFolhaPagamento);
 
@@ -347,5 +356,51 @@ router.post('/new-funcao', multer(funcoesController).array('file'), funcoesContr
 router.get('/all-funcoes/:IDUnidade', funcoesController.getFuncoes);
 router.patch('/update-funcao/:id', multer(funcoesController).array('file'), funcoesController.updateFuncao);
 router.delete('/delete-funcao/:id', funcoesController.deleteFuncao);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE ATA DE CONSTITUICAO ---------------------------*/
+
+router.post('/new-ata-constituicao', multer(ataConstituicaoController).array('file'), ataConstituicaoController.newAtaConstituicao);
+router.get('/all-ata-constituicao', ataConstituicaoController.getAllAtasConstituicao);
+router.patch('/update-ata-constituicao/:id', multer(ataConstituicaoController).array('file'), ataConstituicaoController.updateAtasConstituicao);
+router.delete('/delete-ata-constituicao/:id', ataConstituicaoController.deleteAtaConstituicao);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE INDICADORES DE RESULTADOS ---------------------------*/
+
+router.post('/new-indicador',  multer(indicadoresResultadosController).array('file'), indicadoresResultadosController.newIndicador);
+router.get('/all-indicadores', indicadoresResultadosController.getAllIndicadores);
+router.get('/indicador/:id', indicadoresResultadosController.getIndicadorById);
+router.get('/search-indicadores', indicadoresResultadosController.getSearchIndicadores)
+router.patch('/update-indicador/:id', multer(indicadoresResultadosController).array('file'), indicadoresResultadosController.updateIndicador);
+router.delete('/delete-indicador/:id', indicadoresResultadosController.deleteIndicador);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE ABSENTEÍSMO ---------------------------*/
+
+router.post('/new-absenteismo',  multer(absenteismoController).array('file'), absenteismoController.newAbsenteismo);
+router.get('/all-absenteismo', absenteismoController.getAllAbsenteismo);
+router.get('/absenteismo/:id', absenteismoController.getAbsenteismoById);
+router.get('/search-absenteismo', absenteismoController.getSearchAbsenteismo)
+router.patch('/update-absenteismo/:id', multer(absenteismoController).array('file'), absenteismoController.updateAbsenteismo);
+router.delete('/delete-absenteismo/:id', absenteismoController.deleteAbsenteismo);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE REGIMENTO INTERNO ---------------------------*/
+
+router.post('/new-regimento-interno', multer(regimentoInternoController).array('file'), regimentoInternoController.newRegimentoInterno);
+router.get('/all-regimento-interno', regimentoInternoController.getAllRegimentoInterno);
+router.patch('/update-regimento-interno/:id', multer(regimentoInternoController).array('file'), regimentoInternoController.updateRegimentoInterno);
+router.delete('/delete-regimento-interno/:id', regimentoInternoController.deleteRegimentoInterno);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE CONVENIOS ---------------------------*/
+
+router.post('/new-convenio', multer(conveniosController).array('file'), conveniosController.newConvenio);
+router.get('/all-convenios', conveniosController.getAllConvenios);
+router.patch('/update-convenio/:id', multer(conveniosController).array('file'), conveniosController.updateConvenio);
+router.delete('/delete-convenio/:id', conveniosController.deleteConvenio);
+
+/*--------------------------- (CONSORCIO) - ROTAS DE AGENDA MENSAL ---------------------------*/
+
+router.post('/new-agenda', multer(agendaMensalController).array('file'), agendaMensalController.newAgenda);
+router.get('/all-agenda', agendaMensalController.getAgenda);
+router.patch('/update-agenda/:id', multer(agendaMensalController).array('file'), agendaMensalController.updateAgenda);
+router.delete('/delete-agenda/:id', agendaMensalController.deleteAgenda);
 
 module.exports = router;

@@ -85,6 +85,110 @@ module.exports = {
                 res.status(200).json({ status: 0, message: 'Dados atualizado!' });
             }
         });
+    },
+
+    getPublicacoes(req, res) {
+        const query = `
+            -- Último arquivo da POLICLÍNICA RAIMUNDO SOARES RESENDE
+            (SELECT 
+                id, 
+                typeFile, 
+                secretary, 
+                date, 
+                file, 
+                'polo' as source,
+                DATE_FORMAT(date, '%d/%m/%Y %H:%i') as formattedDate,
+                'POLICLÍNICA RAIMUNDO SOARES RESENDE' as secretaria_tipo
+            FROM arquivos_polo
+            WHERE secretary IN ('POLICLÍNICA RAIMUNDO SOARES RESENDE', 'POLICLÍNICA REGIONAL DE CRATEÚS RAIMUNDO SOARES RESENDE')
+            ORDER BY date DESC
+            LIMIT 1)
+            
+            UNION ALL
+            
+            -- Último arquivo do CENTRO DE ESPECIALIDADES ODONTOLOGICAS
+            (SELECT 
+                id, 
+                typeFile, 
+                secretary, 
+                date, 
+                file, 
+                'polo' as source,
+                DATE_FORMAT(date, '%d/%m/%Y %H:%i') as formattedDate,
+                'CENTRO DE ESPECIALIDADES ODONTOLOGICAS' as secretaria_tipo
+            FROM arquivos_polo
+            WHERE secretary IN ('CENTRO DE ESPECIALIDADES ODONTOLOGICAS', 'CENTRO DE ESPECIALIDADES ODONTOLOGICAS DR. SILVIO GERALDO FIGUEIREDO FROTA')
+            ORDER BY date DESC
+            LIMIT 1)
+            
+            UNION ALL
+            
+            -- Último arquivo do CONSÓRCIO PÚBLICO DE SAÚDE DA MICRORREGIÃO DE CRATEÚS
+            (SELECT 
+                id, 
+                typeFile, 
+                secretary, 
+                date, 
+                file, 
+                'polo' as source,
+                DATE_FORMAT(date, '%d/%m/%Y %H:%i') as formattedDate,
+                'CONSÓRCIO PÚBLICO DE SAÚDE' as secretaria_tipo
+            FROM arquivos_polo
+            WHERE secretary = 'CONSÓRCIO PÚBLICO DE SAÚDE DA MICRORREGIÃO DE CRATEÚS'
+            ORDER BY date DESC
+            LIMIT 1)
+            
+            UNION ALL
+            
+            -- Último arquivo do Processo Seletivo
+            (SELECT 
+                id, 
+                typeFile, 
+                NULL as secretary, 
+                date, 
+                file, 
+                'seletivo' as source,
+                DATE_FORMAT(date, '%d/%m/%Y %H:%i') as formattedDate,
+                'PROCESSO SELETIVO' as secretaria_tipo
+            FROM processoseletivo
+            ORDER BY date DESC
+            LIMIT 1)
+            
+            ORDER BY secretaria_tipo
+        `;
+
+        connection.query(query, [], function (error, results, fields) {
+            if (error) {
+                console.error('Erro ao buscar publicações:', error);
+                res.status(400).json({ 
+                    status: 0, 
+                    message: 'Erro ao obter publicações', 
+                    error: error 
+                });
+            } else {
+                // Processar o campo file do processo seletivo (se for JSON)
+                const processedResults = results.map(item => {
+                    if (item.source === 'seletivo' && item.file) {
+                        try {
+                            // Tenta fazer parse do JSON se necessário
+                            if (typeof item.file === 'string' && item.file.startsWith('[')) {
+                                item.file = JSON.parse(item.file);
+                            }
+                        } catch (e) {
+                            console.error('Erro ao parsear file do processo seletivo:', e);
+                        }
+                    }
+                    return item;
+                });
+                
+                res.status(200).json({ 
+                    status: 1, 
+                    message: 'Publicações obtidas com sucesso',
+                    data: processedResults 
+                });
+            }
+        });
     }
+
 
 }

@@ -119,10 +119,10 @@ module.exports = {
               bccMail = 'ouvidoria@cpsmcrateus.ce.gov.br';
               break;
             case 'CEO':
-              bccMail = 'ouvidoriaceo7@gmail.com';
+              bccMail = 'ouvidoriaceor@cpsmcrateus.ce.gov.br';
               break;
             default:
-              bccMail = 'ouvidoriapoliclinica354@gmail.com';
+              bccMail = 'ouvidoriapoliclinica@cpsmcrateus.ce.gov.br';
         }
 
         const mailOptions = {

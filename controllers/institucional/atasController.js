@@ -26,6 +26,7 @@ module.exports = {
         const title = dataForm.title;
         const date = dataForm.date || '';
         const secretary = dataForm.secretary || '';
+        const category = dataForm.category || '';
         const file = arrayFile;
         const description = dataForm.description || '';
 
@@ -33,12 +34,14 @@ module.exports = {
             title,
             date, 
             secretary,
+            category,
             file,
             description
             ) VALUES (
                 '${title}',
                 '${date}', 
                 '${secretary}',
+                '${category}',
                 '${JSON.stringify(file)}',
                 '${description}'
             )`;
@@ -93,12 +96,14 @@ module.exports = {
         const title = dataForm.title;
         const date = dataForm.date || '';
         const secretary = dataForm.secretary || '';
-        const file = arrayFile.length > 0 ? arrayFile : dataForm.file;
+        const category = dataForm.category || '';
+        const file = arrayFile.length > 0 ? arrayFile : (typeof dataForm.file === 'string' ? JSON.parse(dataForm.file) : dataForm.file);
         const description = dataForm.description || '';
 
         const updateAta = 'UPDATE `atas` SET `title`= ?,' +
             '`date`= ?,' +
             '`secretary`= ?,' +
+            '`category`= ?,' +
             '`file`= ?,' +
             '`description`= ?' +
             'WHERE `atas`.`ID`= ?';
@@ -107,6 +112,7 @@ module.exports = {
             title,
             date,
             secretary,
+            category,
             JSON.stringify(file),
             description,
             id
