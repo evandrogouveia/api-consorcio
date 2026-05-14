@@ -37,6 +37,7 @@ module.exports = {
         const responsibleTecnicalOpinion = dataForm.responsibleTecnicalOpinion || '';
         const responsibleAward = dataForm.responsibleAward || '';
         const responsibleHomologation = dataForm.responsibleHomologation || '';
+        const linkPncp = dataForm.linkPncp || '';
 
         const newLicitacao = `INSERT INTO licitacoes(
             title,
@@ -52,7 +53,8 @@ module.exports = {
             responsibleInformin,
             responsibleTecnicalOpinion,
             responsibleAward,
-            responsibleHomologation
+            responsibleHomologation,
+            link_pncp
             ) VALUES (
                 '${title}',
                 '${exercise}',
@@ -67,7 +69,8 @@ module.exports = {
                 '${responsibleInformin}',
                 '${responsibleTecnicalOpinion}',
                 '${responsibleAward}',
-                '${responsibleHomologation}'
+                '${responsibleHomologation}',
+                '${linkPncp}'
             )`;
 
         connection.query(newLicitacao, [], function (error, resultsRegister, fields) {
@@ -133,6 +136,7 @@ module.exports = {
         const responsibleTecnicalOpinion = dataForm.responsibleTecnicalOpinion || '';
         const responsibleAward = dataForm.responsibleAward || '';
         const responsibleHomologation = dataForm.responsibleHomologation || '';
+        const linkPncp = dataForm.linkPncp || '';
 
         const updateLicitacao = 'UPDATE `licitacoes` SET `title`= ?,' +
             '`exercise`= ?,' +
@@ -147,7 +151,8 @@ module.exports = {
             '`responsibleInformin`= ?,' +
             '`responsibleTecnicalOpinion`= ?,' +
             '`responsibleAward`= ?,' +
-            '`responsibleHomologation`= ?' +
+            '`responsibleHomologation`= ?,' +
+            '`link_pncp`= ?' +
             'WHERE `licitacoes`.`ID`= ?';
 
         connection.query(updateLicitacao, [
@@ -165,6 +170,7 @@ module.exports = {
             responsibleTecnicalOpinion,
             responsibleAward,
             responsibleHomologation,
+            linkPncp,
             id
         ], function (error, results, fields) {
             if (error) {

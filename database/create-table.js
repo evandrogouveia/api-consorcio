@@ -263,7 +263,6 @@ function createTable(conn) {
    
 
     const novaColunaContratos = "ALTER TABLE contracts ADD COLUMN IDlicitacao VARCHAR(50) AFTER description";
-    const novaColunaLicitacoes = "ALTER TABLE licitacoes ADD COLUMN exercise VARCHAR(150) AFTER title";
 
      /* CRIAR TABELA DE ORÇAMENTO CONTÁBIL*/
      const sqlOrcamentoContabil = "CREATE TABLE IF NOT EXISTS orcamento_contabil(\n" +
@@ -445,7 +444,10 @@ function createTable(conn) {
      "PRIMARY KEY (ID)\n" +
      ");";
 
-    conn.query(sqlAgendaMensal, function (error, results, fields) {
+    const novaColunaLicitacoes = "ALTER TABLE licitacoes ADD COLUMN link_pncp VARCHAR(500)";
+
+
+    conn.query(novaColunaLicitacoes, function (error, results, fields) {
         if (error) return console.log(error);
         console.log('criou a tabela');
         pool.end();
