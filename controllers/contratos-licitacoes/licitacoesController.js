@@ -37,7 +37,7 @@ module.exports = {
         const responsibleTecnicalOpinion = dataForm.responsibleTecnicalOpinion || '';
         const responsibleAward = dataForm.responsibleAward || '';
         const responsibleHomologation = dataForm.responsibleHomologation || '';
-        const linkPncp = dataForm.linkPncp || '';
+        const linkPncp = dataForm.link_pncp || '';
 
         const newLicitacao = `INSERT INTO licitacoes(
             title,
@@ -136,7 +136,7 @@ module.exports = {
         const responsibleTecnicalOpinion = dataForm.responsibleTecnicalOpinion || '';
         const responsibleAward = dataForm.responsibleAward || '';
         const responsibleHomologation = dataForm.responsibleHomologation || '';
-        const linkPncp = dataForm.linkPncp || '';
+        const linkPncp = dataForm.link_pncp || '';
 
         const updateLicitacao = 'UPDATE `licitacoes` SET `title`= ?,' +
             '`exercise`= ?,' +
