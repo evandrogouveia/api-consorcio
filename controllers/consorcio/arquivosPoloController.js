@@ -64,7 +64,7 @@ module.exports = {
     },
 
     getAllArquivos(req, res) {
-        const selectArquivo = `SELECT * FROM arquivos_polo ORDER BY date DESC LIMIT 4`;
+        const selectArquivo = `SELECT * FROM arquivos_polo ORDER BY date DESC`;
 
         connection.query(selectArquivo, [], function (error, results, fields) {
             if (error) {
